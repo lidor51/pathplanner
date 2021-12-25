@@ -131,8 +131,8 @@ class PlannedPath {
 			} else {
 				this.points.splice(anchorIndex - 1, 3);
 			}
-			this.velocities.splice(this.anchorIndexToVelocity(anchorIndex));
-			this.holonomicAngles.splice(this.anchorIndexToVelocity(anchorIndex));
+			this.velocities.splice(this.anchorIndexToVelocity(anchorIndex), 1);
+			this.holonomicAngles.splice(this.anchorIndexToVelocity(anchorIndex), 1);
 		}
 	}
 
