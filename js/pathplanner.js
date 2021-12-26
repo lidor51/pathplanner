@@ -171,6 +171,7 @@ $(document).ready(function () {
 			points: pathEditor.plannedPath.points,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			preferences: preferences,
 			reverse: reversed
 		});
@@ -198,6 +199,7 @@ $(document).ready(function () {
 			points: pathEditor.plannedPath.points,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			preferences: preferences,
 			reverse: reversed,
 			deploy: true
@@ -245,6 +247,7 @@ $(document).ready(function () {
 			points: pathEditor.plannedPath.points,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			preferences: preferences,
 			reverse: reversed
 		});
@@ -255,6 +258,7 @@ $(document).ready(function () {
 			points: pathEditor.plannedPath.points,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			preferences: preferences,
 			reverse: reversed,
 			deploy: true
@@ -265,6 +269,7 @@ $(document).ready(function () {
 			points: pathEditor.plannedPath.points,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			preferences: preferences,
 			preview: true
 		});
@@ -274,6 +279,7 @@ $(document).ready(function () {
 			points: pathEditor.plannedPath.points,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			preferences: preferences,
 			preview: true
 		});
@@ -383,6 +389,7 @@ function savePath() {
 			points: fixedPoints,
 			velocities: pathEditor.plannedPath.velocities,
 			holonomicAngles: pathEditor.plannedPath.holonomicAngles,
+			markers: pathEditor.plannedPath.markers,
 			reversed: $('#reversed').prop('checked'),
 			maxVel: preferences.maxVel,
 			maxAcc: preferences.maxAcc,
@@ -462,6 +469,7 @@ function loadFile(filename) {
 			}
 			pathEditor.plannedPath.points = points;
 			pathEditor.plannedPath.holonomicAngles = json.holonomicAngles;
+			pathEditor.plannedPath.markers = json.markers;
 			let velocities = json.velocities;
 			if (!velocities) {
 				velocities = [];
@@ -590,7 +598,7 @@ ipc.on('opened-file', function (event, data) {
 });
 
 function pathSerializer(done) {
-	done(JSON.stringify({points: pathEditor.plannedPath.points, velocities: pathEditor.plannedPath.velocities, holonomicAngles: pathEditor.plannedPath.holonomicAngles}));
+	done(JSON.stringify({points: pathEditor.plannedPath.points, velocities: pathEditor.plannedPath.velocities, holonomicAngles: pathEditor.plannedPath.holonomicAngles, markers: pathEditor.plannedPath.markers}));
 }
 
 function handleUndoRedo(serialized) {
@@ -599,6 +607,7 @@ function handleUndoRedo(serialized) {
 		pathEditor.plannedPath.points = object.points;
 		pathEditor.plannedPath.velocities = object.velocities;
 		pathEditor.plannedPath.holonomicAngles = object.holonomicAngles;
+		pathEditor.plannedPath.markers = object.markers;
 		pathEditor.update();
 	}
 }

@@ -165,6 +165,8 @@ class PathEditor {
 									velocity = null;
 								}
 								document.getElementById('pointVelocity').value = velocity;
+								document.getElementById('pointHolonomicAngle').value = this.plannedPath.getHolonomicAngle(this.updatePoint);
+								document.getElementById('pointMarker').checked = this.plannedPath.getMarker(this.updatePoint) === 1 ? true : null;
 								M.updateTextFields();
 								pointConfigDialog.open();
 							}
@@ -576,11 +578,15 @@ class PathEditor {
 			var xPos = parseFloat(document.getElementById('pointX').value);
 			var yPos = parseFloat(document.getElementById('pointY').value);
 			var angle = parseFloat(document.getElementById('pointAngle').value);
+			var holonomicAngle = parseFloat(document.getElementById('pointHolonomicAngle').value);
+			var marker = document.getElementById('pointMarker').checked ? 1 : 0;
 			var velocity = Math.max(parseFloat(document.getElementById('pointVelocity').value), (preferences.useMetric) ? 1 * 0.3048 : 1);
 			if (!velocity) {
 				velocity = -1;
 			}
 			this.plannedPath.updateVelocity(this.updatePoint, Math.min(velocity, preferences.maxVel));
+			this.plannedPath.updateHolonomicAngle(this.updatePoint, holonomicAngle);
+			this.plannedPath.updateMarker(this.updatePoint, marker);
 
 			var controlIndex;
 			if (this.updatePoint == this.plannedPath.points.length - 1) {
