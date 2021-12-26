@@ -90,9 +90,9 @@ class PlannedPath {
 			this.holonomicAngles.splice(this.holonomicAngles.length - 1, 0, holonomicAngle);
 			this.markers.splice(this.markers.length - 1, 0, 0);
 		}else{ //between two intermidate waypoints
-			this.velocities.splice(this.anchorIndexToVelocity(index + 1), 0, -1);
-			this.holonomicAngles.splice(this.anchorIndexToVelocity(index + 1), 0, holonomicAngle);
-			this.markers.splice(this.anchorIndexToVelocity(index + 1), 0, 0);
+			this.velocities.splice(this.anchorIndexToWaypointIndex(index + 1), 0, -1);
+			this.holonomicAngles.splice(this.anchorIndexToWaypointIndex(index + 1), 0, holonomicAngle);
+			this.markers.splice(this.anchorIndexToWaypointIndex(index + 1), 0, 0);
 		}
 		this.points.splice(index, 0, control1, anchor, control2);
 	}
@@ -139,9 +139,9 @@ class PlannedPath {
 			} else {
 				this.points.splice(anchorIndex - 1, 3);
 			}
-			this.velocities.splice(this.anchorIndexToVelocity(anchorIndex), 1);
-			this.holonomicAngles.splice(this.anchorIndexToVelocity(anchorIndex), 1);
-			this.markers.splice(this.anchorIndexToVelocity(anchorIndex), 1);
+			this.velocities.splice(this.anchorIndexToWaypointIndex(anchorIndex), 1);
+			this.holonomicAngles.splice(this.anchorIndexToWaypointIndex(anchorIndex), 1);
+			this.markers.splice(this.anchorIndexToWaypointIndex(anchorIndex), 1);
 		}
 	}
 
@@ -151,15 +151,15 @@ class PlannedPath {
 	 * @param vel The new velocity
 	 */
 	updateVelocity(anchorIndex, vel) {
-		this.velocities[this.anchorIndexToVelocity(anchorIndex)] = vel;
+		this.velocities[this.anchorIndexToWaypointIndex(anchorIndex)] = vel;
 	}
 
 	updateHolonomicAngle(anchorIndex, angle) {
-		this.holonomicAngles[this.anchorIndexToVelocity(anchorIndex)] = angle;
+		this.holonomicAngles[this.anchorIndexToWaypointIndex(anchorIndex)] = angle;
 	}
 
 	updateMarker(anchorIndex, marker) {
-		this.markers[this.anchorIndexToVelocity(anchorIndex)] = marker;
+		this.markers[this.anchorIndexToWaypointIndex(anchorIndex)] = marker;
 	}
 
 	/**
@@ -168,15 +168,15 @@ class PlannedPath {
 	 * @returns {number} The velocity
 	 */
 	getVelocity(anchorIndex) {
-		return this.velocities[this.anchorIndexToVelocity(anchorIndex)];
+		return this.velocities[this.anchorIndexToWaypointIndex(anchorIndex)];
 	}
 
 	getHolonomicAngle(anchorIndex){
-		return this.holonomicAngles[this.anchorIndexToVelocity(anchorIndex)];
+		return this.holonomicAngles[this.anchorIndexToWaypointIndex(anchorIndex)];
 	}
 
 	getMarker(anchorIndex){
-		return this.markers[this.anchorIndexToVelocity(anchorIndex)];
+		return this.markers[this.anchorIndexToWaypointIndex(anchorIndex)];
 	}
 
 	/**
@@ -184,7 +184,7 @@ class PlannedPath {
 	 * @param anchorIndex The anchor index
 	 * @returns {number} The velocity index
 	 */
-	anchorIndexToVelocity(anchorIndex) {
+	anchorIndexToWaypointIndex(anchorIndex) {
 		if (anchorIndex === 0) {
 			return 0;
 		} else {

@@ -39,5 +39,5 @@ test('Update/Get Velocity', () => {
 });
 
 test('Anchor Index to Velocity', () => {
-    expect(p.anchorIndexToVelocity(3)).toBe(1);
+    expect(p.anchorIndexToWaypointIndex(3)).toBe(1);
 });
