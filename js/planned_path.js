@@ -57,7 +57,7 @@ class PlannedPath {
 	}
 
 	/**
-	 * Add a new spline to the path
+	 * Add a new spline to the end of the path
 	 * @param anchorPos The position of the new anchor point
 	 */
 	addSpline(anchorPos) {
@@ -65,7 +65,7 @@ class PlannedPath {
 		this.points.push(Vector2.multiply(Vector2.add(this.points[this.points.length - 1], new Vector2(anchorPos.x, anchorPos.y)), 0.5));
 		this.points.push(new Vector2(anchorPos.x, anchorPos.y));
 		this.velocities.push(-1);
-		this.holonomicAngles.push(0);
+		this.holonomicAngles.push(this.holonomicAngles[this.holonomicAngles.length - 1]);
 		this.markers.push(0);
 	}
 
@@ -80,18 +80,19 @@ class PlannedPath {
 		let anchor = new Vector2(anchorPos.x, anchorPos.y);
 		// let control2 = new Vector2(anchorPos.x + 5, anchorPos.y + 5);
 		let control2 = Vector2.subtract(Vector2.multiply(anchor, 2), control1);
-		if(index === 2){
+		let holonomicAngle = 0; 
+		if(index === 2){ //after first waypoint
 			this.velocities.splice(1, 0, -1);
-			this.holonomicAngles.splice(1, 0, -1);
-			this.markers.splice(1, 0, -1);
-		}else if(index === this.points.length - 2){
-			this.velocities.splice(this.velocities.length - 2, 0, -1);
-			this.holonomicAngles.splice(this.velocities.length - 2, 0, -1);
-			this.markers.splice(this.velocities.length - 2, 0, -1);
-		}else{
+			this.holonomicAngles.splice(1, 0, holonomicAngle);
+			this.markers.splice(1, 0, 0);
+		}else if(index === this.points.length - 2){ //before last waypoint
+			this.velocities.splice(this.velocities.length - 1, 0, -1);
+			this.holonomicAngles.splice(this.holonomicAngles.length - 1, 0, holonomicAngle);
+			this.markers.splice(this.markers.length - 1, 0, 0);
+		}else{ //between two intermidate waypoints
 			this.velocities.splice(this.anchorIndexToVelocity(index + 1), 0, -1);
-			this.holonomicAngles.splice(this.anchorIndexToVelocity(index + 1), 0, -1);
-			this.markers.splice(this.anchorIndexToVelocity(index + 1), 0, -1);
+			this.holonomicAngles.splice(this.anchorIndexToVelocity(index + 1), 0, holonomicAngle);
+			this.markers.splice(this.anchorIndexToVelocity(index + 1), 0, 0);
 		}
 		this.points.splice(index, 0, control1, anchor, control2);
 	}
