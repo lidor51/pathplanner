@@ -14,7 +14,7 @@ const {PathEditor} = require('./js/path_editor.js');
 const showdown = require('showdown');
 const semver = require('semver');
 const github = require('octonode').client();
-const repo = github.repo('mjansen4857/PathPlanner');
+const repo = github.repo('lidor51/PathPlanner');
 const SimpleUndo = require('simple-undo');
 let history;
 const outputFormatRegX = /^[xyXYpvahHtSsWwroOj1234567](?:,[xyXYpvahHtSsWwroOj1234567])*$/g;

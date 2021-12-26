@@ -44,13 +44,13 @@
       "!test${/*}"
     ]
   },
-  "repository": "https://github.com/mjansen4857/PathPlanner.git",
+  "repository": "https://github.com/lidor51/PathPlanner.git",
   "author": "Michael Jansen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mjansen4857/PathPlanner/issues"
+    "url": "https://github.com/lidor51/PathPlanner/issues"
   },
-  "homepage": "https://github.com/mjansen4857/PathPlanner#readme",
+  "homepage": "https://github.com/lidor51/PathPlanner#readme",
   "devDependencies": {
     "electron": "^7.2.4",
     "electron-builder": "^22.9.1",
