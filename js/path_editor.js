@@ -349,6 +349,12 @@ class PathEditor {
 		const points = this.plannedPath.points;
 		for (let i = 0; i < points.length; i++) {
 			g.lineWidth = 3;
+			if (this.plannedPath.getMarker(i) === 1) {
+				g.strokeStyle = "#f5ad42";
+				g.beginPath();
+				g.arc(points[i].x, points[i].y, 16, 4 * Math.PI, 0);
+				g.stroke();
+			}
 			if (i === 0) {
 				const angle = Math.atan2(points[i + 1].y - points[i].y, points[i + 1].x - points[i].x);
 				const l = new Vector2(points[i].x + (preferences.wheelbaseWidth / 2 * ((preferences.useMetric) ? Util.pixelsPerMeter : Util.pixelsPerFoot) * Math.sin(angle)), points[i].y - (preferences.wheelbaseWidth / 2 * ((preferences.useMetric) ? Util.pixelsPerMeter : Util.pixelsPerFoot) * Math.cos(angle)));
@@ -418,6 +424,12 @@ class PathEditor {
 				const angle = this.plannedPath.getHolonomicAngle(i) * (Math.PI / 180);
 				const l = new Vector2(points[i].x - (preferences.wheelbaseWidth / 2 * ((preferences.useMetric) ? Util.pixelsPerMeter : Util.pixelsPerFoot) * Math.sin(angle)), points[i].y + (preferences.wheelbaseWidth / 2 * ((preferences.useMetric) ? Util.pixelsPerMeter : Util.pixelsPerFoot) * Math.cos(angle)));
 				const r = new Vector2(points[i].x + (preferences.wheelbaseWidth / 2 * ((preferences.useMetric) ? Util.pixelsPerMeter : Util.pixelsPerFoot) * Math.sin(angle)), points[i].y - (preferences.wheelbaseWidth / 2 * ((preferences.useMetric) ? Util.pixelsPerMeter : Util.pixelsPerFoot) * Math.cos(angle)));
+				if (this.plannedPath.getMarker(i) === 1) {
+					g.strokeStyle = "#f5ad42";
+					g.beginPath();
+					g.arc(points[i].x, points[i].y, 16, 4 * Math.PI, 0);
+					g.stroke();
+				}
 				if(i === points.length - 1){
 					g.fillStyle = "#d32f2f";
 					g.strokeStyle = "#d32f2f";
