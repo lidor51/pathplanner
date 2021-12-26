@@ -7,16 +7,19 @@ const joinStep = 0.00001;
  * Creates a segment group of many points on the curve from the list of anchor and control points
  * @param points The path points
  * @param holonomicAngles The angles for holonomic driving
+ * @param markers Waypoints with Flags.
  * @param step The step to use to interpolate the curve
  * @param noLogging true if logging info should be skipped
  * @returns The points on the curve
  */
-function join(points, holonomicAngles, step, noLogging) {
+function join(points, holonomicAngles, markers, step, noLogging) {
     if(!noLogging) log.info('    Joining splines... ');
     const start = new Date().getTime();
     let s = new SegmentGroup();
+    var markerCounter = 0;
     const numSplines = ((points.length - 4) / 3) + 1;
     for (let i = 0; i < numSplines; i++) {
+        markerCounter += markers[i];
         const pointsInSpline = [points[i * 3], points[i * 3 + 1], points[i * 3 + 2], points[i * 3 + 3]];
         for (let d = step; d <= 1.0; d += step) {
             const p = Util.cubicCurve(pointsInSpline[0], pointsInSpline[1], pointsInSpline[2], pointsInSpline[3], d);
@@ -35,9 +38,13 @@ function join(points, holonomicAngles, step, noLogging) {
                 }
             }
             seg.holonomicAngle = holonomicAngles[i] + (interpolationFactor * (deltaAngle));
+            seg.marker = markerCounter;
             s.add(seg);
         }
     }
+    s.segments[0].marker = 0;
+    //s.segments[s.segments.length - 1].marker = 10;
+
     if(!noLogging) {
         log.info('        Num segments per spline: ' + (s.segments.length / numSplines));
         log.info('        Total segments: ' + s.segments.length);
@@ -47,7 +54,7 @@ function join(points, holonomicAngles, step, noLogging) {
 }
 
 class RobotPath {
-    constructor(points, velocities, holonomicAngles, preferences, reverse, noLogging) {
+    constructor(points, velocities, holonomicAngles, markers, preferences, reverse, noLogging) {
         this.noLogging = noLogging;
         if(!this.noLogging) log.info('Generating path...');
         const start = new Date().getTime();
@@ -57,9 +64,10 @@ class RobotPath {
         if(preferences.p_gameYear == 21){
             pixelsPerUnit = preferences.p_useMetric ? Util.pixelsPerMeter21 : Util.pixelsPerFoot21;
         }
-        this.path = new Path(join(points, holonomicAngles, joinStep, noLogging), points[0], pixelsPerUnit, noLogging, this.xPixelOffset);
+        this.path = new Path(join(points, holonomicAngles, markers, joinStep, noLogging), points[0], pixelsPerUnit, noLogging, this.xPixelOffset);
         this.velocities = velocities;
         this.holonomicAngles = holonomicAngles;
+        this.markers = markers;
         this.pathSegments = this.path.group;
         this.timeSegments = new SegmentGroup();
         this.left = new SegmentGroup();
@@ -260,6 +268,7 @@ class RobotPath {
                 segNum++;
             }
         }
+        this.timeSegments.segments[this.timeSegments.segments.length - 1].marker += this.markers[this.markers.length - 1];
         if(!this.noLogging) {
             log.info('        Divided into: ' + segNum + ' segments, with ' + numMessySeg + ' messy segments.');
             log.info('        Stats:');
@@ -361,6 +370,7 @@ class RobotPath {
             left.radius = seg.radius;
             left.angularVelocity = seg.angularVelocity;
             left.angularAccel = seg.angularAccel;
+            left.marker = seg.marker;
 
             if (i > 0) {
                 const last = this.left.segments[i - 1];
@@ -386,6 +396,7 @@ class RobotPath {
             right.radius = seg.radius;
             right.angularVelocity = seg.angularVelocity;
             right.angularAccel = seg.angularAccel;
+            right.marker = seg.marker;
 
             if (i > 0) {
                 const last = this.right.segments[i - 1];
@@ -507,6 +518,7 @@ class Path {
             seg.pos = this.l[s];
             seg.dydx = this.derivative(s, s2);
             seg.holonomicAngle = this.inGroup.segments[i].holonomicAngle;
+            seg.marker = this.inGroup.segments[i].marker;
             if (i !== 0) {
                 seg.dx = seg.pos - this.group.segments[this.group.segments.length - 1].pos;
             }

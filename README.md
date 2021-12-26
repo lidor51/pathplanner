@@ -77,6 +77,7 @@ This mode is still very experimental and may have issues.
 | O      | Angular Acceleration                                                   |
 | hh     | Holonomic Drive Heading in Degrees (-180 to 180, holonomic drive only) |
 | j      | Jerk (Center if single file, left/right if split)                      |
+| mk      | Marker Counter                     |
 
 If you would like all headings to be output in radians instead of degrees, you will need to manually edit the settings file located at `{USER HOME}/.PathPlanner/settings.json` and add this entry: `"outputRadians": true`
 

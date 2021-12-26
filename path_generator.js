@@ -12,13 +12,13 @@ unhandled({logger: log.error, showDialog: true});
 ipc.on('generate-path', function (event, data) {
 	try {
 		if (data.preview) {
-			generateAndSendSegments(data.points, data.velocities, data.holonomicAngles, data.preferences);
+			generateAndSendSegments(data.points, data.velocities, data.holonomicAngles, data.markers, data.preferences);
 		} else if (data.deploy) {
-			generateAndDeploy(data.points, data.velocities, data.holonomicAngles, data.preferences, data.reverse);
+			generateAndDeploy(data.points, data.velocities, data.holonomicAngles, data.markers, data.preferences, data.reverse);
 		} else if (data.preferences.p_outputType === 0) {
-			generateAndSave(data.points, data.velocities, data.holonomicAngles, data.preferences, data.reverse);
+			generateAndSave(data.points, data.velocities, data.holonomicAngles, data.markers, data.preferences, data.reverse);
 		} else {
-			generateAndCopy(data.points, data.velocities, data.holonomicAngles, data.preferences, data.reverse);
+			generateAndCopy(data.points, data.velocities, data.holonomicAngles, data.markers, data.preferences, data.reverse);
 		}
 	} catch (err) {
 		log.error(err);
@@ -33,11 +33,12 @@ ipc.on('generate-path', function (event, data) {
  * @param points The path points
  * @param velocities The path velocities
  * @param holonomicAngles Angles for holonomic drive
+ * @param markers Waypoints with Flags.
  * @param preferences The robot preferences
  */
-function generateAndSendSegments(points, velocities, holonomicAngles, preferences) {
+function generateAndSendSegments(points, velocities, holonomicAngles, markers, preferences) {
 	ipc.send('generating');
-	const robotPath = new RobotPath(points, velocities, holonomicAngles, preferences);
+	const robotPath = new RobotPath(points, velocities, holonomicAngles, markers, preferences);
 	ipc.send('preview-segments', {
 		left: robotPath.left.segments,
 		right: robotPath.right.segments,
@@ -50,12 +51,13 @@ function generateAndSendSegments(points, velocities, holonomicAngles, preference
  * @param points The path points
  * @param velocities The path velocities
  * @param holonomicAngles Angles for holonomic drive
+ * @param markers Waypoints with Flags.
  * @param preferences The robot preferences
  * @param reverse Should the robot drive backwards
  */
-function generateAndDeploy(points, velocities, holonomicAngles, preferences, reverse) {
+function generateAndDeploy(points, velocities, holonomicAngles, markers, preferences, reverse) {
 	ipc.send('generating');
-	const robotPath = new RobotPath(points, velocities, holonomicAngles, preferences, reverse);
+	const robotPath = new RobotPath(points, velocities, holonomicAngles, markers, preferences, reverse);
 	let outL = '';
 	let outR = '';
 	const outC = robotPath.timeSegments.formatCSV(reverse, preferences.p_outputFormat, preferences.p_timeStep, preferences.csvHeader, robotPath, preferences.p_outputRadians);
@@ -81,12 +83,13 @@ function generateAndDeploy(points, velocities, holonomicAngles, preferences, rev
  * @param points The path points
  * @param velocities The path velocities
  * @param holonomicAngles Angles for holonomic drive
+ * @param markers Waypoints with Flags.
  * @param preferences The robot preferences
  * @param reverse Should the robot drive backwards
  */
-function generateAndCopy(points, velocities, holonomicAngles, preferences, reverse) {
+function generateAndCopy(points, velocities, holonomicAngles, markers, preferences, reverse) {
 	ipc.send('generating');
-	const robotPath = new RobotPath(points, velocities, holonomicAngles, preferences, reverse);
+	const robotPath = new RobotPath(points, velocities, holonomicAngles, markers, preferences, reverse);
 	let out;
 	if (preferences.p_outputType === 1) {
 		if (preferences.p_splitPath) {
@@ -134,10 +137,11 @@ function generateAndCopy(points, velocities, holonomicAngles, preferences, rever
  * @param points The path points
  * @param velocities The path velocities
  * @param holonomicAngles Angles for holonomic drive
+ * @param markers Waypoints with Flags.
  * @param preferences The robot preferences
  * @param reverse Should the robot drive backwards
  */
-function generateAndSave(points, velocities, holonomicAngles, preferences, reverse) {
+function generateAndSave(points, velocities, holonomicAngles, markers, preferences, reverse) {
 	let filePath = preferences.p_lastGenerateDir;
 	if (filePath === 'none') {
 		filePath = homeDir;
@@ -155,7 +159,7 @@ function generateAndSave(points, velocities, holonomicAngles, preferences, rever
 		log.info(filename);
 
 		ipc.send('generating');
-		const robotPath = new RobotPath(points, velocities, holonomicAngles, preferences, reverse);
+		const robotPath = new RobotPath(points, velocities, holonomicAngles, markers, preferences, reverse);
 		if (preferences.p_splitPath) {
 			let outL = '';
 			let outR = '';

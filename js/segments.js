@@ -119,6 +119,8 @@ class SegmentGroup {
         }
         ret = ret.replace(/O/g, (Math.round(angularAccel * 10000) / 10000).toString());
         ret = ret.replace(/j/g, (Math.round(s.jerk * 10000) / 10000).toString());
+        ret = ret.replace(/mk/g, s.marker.toString());
+
         return ret;
     }
 
@@ -150,6 +152,7 @@ class Segment {
         this.angularAccel = 0.0;
         this.holonomicAngle = 0.0;
         this.jerk = 0.0;
+        this.marker = 0;
     }
 }
 

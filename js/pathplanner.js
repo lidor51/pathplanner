@@ -17,7 +17,7 @@ const github = require('octonode').client();
 const repo = github.repo('lidor51/PathPlanner');
 const SimpleUndo = require('simple-undo');
 let history;
-const outputFormatRegX = /^[xyXYpvahHtSsWwroOj1234567](?:,[xyXYpvahHtSsWwroOj1234567])*$/g;
+const outputFormatRegX = /^[xyXYpvahHtSsWwroOj12345678](?:,[xyXYpvahHtSsWwroOj12345678])*$/g;
 let unsavedChanges = false;
 
 let pathEditor;
@@ -156,7 +156,7 @@ $(document).ready(function () {
 		preferences.outputType = $('#outputType').prop('selectedIndex');
 		const format = $('#outputFormat').val();
 		//this is a stupid workaround but whatever
-		let cleanedFormat = format.replace(/pl/g, '1').replace(/pr/g, '2').replace(/vl/g, '3').replace(/vr/g, '4').replace(/al/g, '5').replace(/ar/g, '6').replace(/hh/g, '7');
+		let cleanedFormat = format.replace(/pl/g, '1').replace(/pr/g, '2').replace(/vl/g, '3').replace(/vr/g, '4').replace(/al/g, '5').replace(/ar/g, '6').replace(/hh/g, '7').replace(/mk/g, '8');
 		if (!cleanedFormat.match(outputFormatRegX)) {
 			M.toast({
 				html: '<span style="color: #d32f2f !important;">Invalid output format!</span>',
@@ -184,7 +184,7 @@ $(document).ready(function () {
 		preferences.outputType = $('#outputType').prop('selectedIndex');
 		const format = $('#outputFormat').val();
 		//this is a stupid workaround but whatever
-		let cleanedFormat = format.replace(/pl/g, '1').replace(/pr/g, '2').replace(/vl/g, '3').replace(/vr/g, '4').replace(/al/g, '5').replace(/ar/g, '6').replace(/hh/g, '7');
+		let cleanedFormat = format.replace(/pl/g, '1').replace(/pr/g, '2').replace(/vl/g, '3').replace(/vr/g, '4').replace(/al/g, '5').replace(/ar/g, '6').replace(/hh/g, '7').replace(/mk/g, '8');
 		if (!cleanedFormat.match(outputFormatRegX)) {
 			M.toast({
 				html: '<span style="color: #d32f2f !important;">Invalid output format!</span>',
