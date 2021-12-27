@@ -1,10 +1,7 @@
 # PathPlanner
-![CircleCI](https://circleci.com/gh/mjansen4857/PathPlanner/tree/master.svg?style=svg)](https://circleci.com/gh/mjansen4857/PathPlanner/tree/master)
-![version](https://img.shields.io/github/release/mjansen4857/PathPlanner.svg)
-![downloads](https://img.shields.io/github/downloads/mjansen4857/PathPlanner/total.svg)
 
-Windows, MacOS, and Linux versions can be downloaded [here.](https://github.com/lidor51/pathplanner/releases/latest)
-Windows Store and Snap Store versions will no longer be updated.
+Windows version can be downloaded [here.](https://github.com/lidor51/pathplanner/releases/latest)
+Linux and MacOS versions can be build manually, as explained below.
 
 ## About
 ![Path Editor](https://i.imgur.com/7sJ1jsx.png)
