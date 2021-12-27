@@ -1,14 +1,14 @@
 # PathPlanner
-[![CircleCI](https://circleci.com/gh/mjansen4857/PathPlanner/tree/master.svg?style=svg)](https://circleci.com/gh/mjansen4857/PathPlanner/tree/master)
+![CircleCI](https://circleci.com/gh/mjansen4857/PathPlanner/tree/master.svg?style=svg)](https://circleci.com/gh/mjansen4857/PathPlanner/tree/master)
 ![version](https://img.shields.io/github/release/mjansen4857/PathPlanner.svg)
 ![downloads](https://img.shields.io/github/downloads/mjansen4857/PathPlanner/total.svg)
 
-Windows, MacOS, and Linux versions can be downloaded [here.](https://github.com/mjansen4857/PathPlanner/releases/latest)
+Windows, MacOS, and Linux versions can be downloaded [here.](https://github.com/lidor51/pathplanner/releases/latest)
 Windows Store and Snap Store versions will no longer be updated.
 
 ## About
 ![Path Editor](https://i.imgur.com/7sJ1jsx.png)
-PathPlanner is a motion profile generator for FRC robots created by team 3015. Every path allows for manual tuning of the robot position and the curve radius at every point. It allows you to create the perfect path for your robot quicker and easier than other generators. PathPlanner can handle more complex paths than other generators because it will slow down the robot as it heads into a turn instead of going through it as fast as possible. If the robot is still not slowing down enough or you would like the robot to go slow at a certain point in the path, the robot's max velocity can be overridden at each point. 
+PathPlanner is a motion profile generator for FRC robots created by team 3015, and this fork is enhanced by team 1577 (forked of v1.6.0). Every path allows for manual tuning of the robot position and the curve radius at every point. It allows you to create the perfect path for your robot quicker and easier than other generators. PathPlanner can handle more complex paths than other generators because it will slow down the robot as it heads into a turn instead of going through it as fast as possible. If the robot is still not slowing down enough or you would like the robot to go slow at a certain point in the path, the robot's max velocity can be overridden at each point. 
 
 Settings can be updated using the settings button in the top left corner of the window. Actions such as generation, path preview, and saving/loading path files can be done by hovering over the floating button in the bottom right corner and clicking on the desired action. The generate action will allow you to generate a path to be used on a robot. These generated paths can either be deployed directly to the RoboRIO, saved to a CSV file on your computer, or copied to your clipboard as an array. Paths can be saved to and loaded from a file so they can be easily updated. File associations are created, so you can double click on a path file to open it in PathPlanner. Previewing the path will give you an idea of what the robot will look like as it follows the path. This is not a guarantee of what your robot will do because the preview bot lives in a perfect world and does exactly what it is told like a good little bot. The preview bot won't do [this](https://www.youtube.com/watch?v=WWRkd6HCGrc) but real robots can. Please preview responsibly.
 
@@ -22,11 +22,9 @@ Paths consist of two types of points: anchor and control points. Anchor points a
 ## Holonomic Mode
 ![Holonomic Demo](https://i.imgur.com/23Tsgfk.gif)
 
-PathPlanner now comes with an **experimental** holonomic drive train mode. This mode uses the same generation and pathing as the normal version, but decouples the robot's heading from the rest of the path. This allows teams with a holonomic drive train (Swerve drive, Mecanum, etc) to have control over the robot's rotation as it follows the path.
+PathPlanner now comes with an holonomic drive train mode. This mode uses the same generation and pathing as the normal version, but decouples the robot's heading from the rest of the path. This allows teams with a holonomic drive train (Swerve drive, Mecanum, etc) to have control over the robot's rotation as it follows the path.
 
 When holonomic mode is enabled, the robot's perimeter will be drawn at every point along the path. A small gray dot representing the front of the robot will be drawn on the perimeter. This dot can be dragged to change the robot's heading at a given point. During generation, the heading is interpolated between each point.
-
-This mode is still very experimental and may have issues.
 
 ## Controls and Shortcuts
 | Shortcut                                     | Description                              |
