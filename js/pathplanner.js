@@ -71,6 +71,11 @@ $(document).ready(function () {
 			Util.yPixelOffset = Util.yPixelOffset21;
 			Util.pixelsPerFoot = Util.pixelsPerFoot21;
 			Util.pixelsPerMeter = Util.pixelsPerMeter21;
+		}else if(preferences.gameYear == 22){
+			Util.xPixelOffset = Util.xOffset22;
+			Util.yPixelOffset = Util.yPixelOffset22;
+			Util.pixelsPerFoot = Util.pixelsPerFoot22;
+			Util.pixelsPerMeter = Util.pixelsPerMeter22;
 		}else{
 			Util.xPixelOffset = Util.xOffsetNormal;
 			Util.yPixelOffset = Util.yPixelOffsetNormal;
@@ -336,6 +341,11 @@ function onSettingsConfirm() {
 				Util.yPixelOffset = Util.yPixelOffset21;
 				Util.pixelsPerFoot = Util.pixelsPerFoot21;
 				Util.pixelsPerMeter = Util.pixelsPerMeter21;
+			}else if(preferences.gameYear == 22){
+				Util.xPixelOffset = Util.xOffset22;
+				Util.yPixelOffset = Util.yPixelOffset22;
+				Util.pixelsPerFoot = Util.pixelsPerFoot22;
+				Util.pixelsPerMeter = Util.pixelsPerMeter22;
 			}else{
 				Util.xPixelOffset = Util.xOffsetNormal;
 				Util.yPixelOffset = Util.yPixelOffsetNormal;

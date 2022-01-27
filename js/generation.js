@@ -58,13 +58,17 @@ class RobotPath {
         this.noLogging = noLogging;
         if(!this.noLogging) log.info('Generating path...');
         const start = new Date().getTime();
-        this.xPixelOffset = (preferences.p_gameYear === '20') ? Util.xOffset20 : Util.xOffsetNormal;
+        this.xPixelOffset = (preferences.p_gameYear === '20') ? Util.xOffset20 : (preferences.p_gameYear === '22') ? Util.xOffset22 : (preferences.p_gameYear === '21') ? Util.xOffset21 : Util.xOffsetNormal;
+        this.yPixelOffset = (preferences.p_gameYear === '20') ? Util.yPixelOffset20 : (preferences.p_gameYear === '22') ? Util.yPixelOffset22 : (preferences.p_gameYear === '21') ? Util.yPixelOffset21 : Util.yOffsetNormal;
         log.info(Util.pixelsPerFoot, preferences.gameYear);
         let pixelsPerUnit = preferences.p_useMetric ? Util.pixelsPerMeter : Util.pixelsPerFoot;
         if(preferences.p_gameYear == 21){
             pixelsPerUnit = preferences.p_useMetric ? Util.pixelsPerMeter21 : Util.pixelsPerFoot21;
         }
-        this.path = new Path(join(points, holonomicAngles, markers, joinStep, noLogging), points[0], pixelsPerUnit, noLogging, this.xPixelOffset);
+        if(preferences.p_gameYear == 22){
+            pixelsPerUnit = preferences.p_useMetric ? Util.pixelsPerMeter22 : Util.pixelsPerFoot22;
+        }
+        this.path = new Path(join(points, holonomicAngles, markers, joinStep, noLogging), points[0], pixelsPerUnit, noLogging, this.xPixelOffset, this.yPixelOffset);
         this.velocities = velocities;
         this.holonomicAngles = holonomicAngles;
         this.markers = markers;
@@ -444,7 +448,7 @@ class RobotPath {
 }
 
 class Path {
-    constructor(s, p0, pixelsPerUnit, noLogging, xPixelOffset) {
+    constructor(s, p0, pixelsPerUnit, noLogging, xPixelOffset, yPixelOffset) {
         this.noLogging = noLogging;
         this.length = 0.0;
         this.p0 = p0;
@@ -455,6 +459,7 @@ class Path {
         this.group = new SegmentGroup();
         this.pixelsPerUnit = pixelsPerUnit;
         this.xPixelOffset = xPixelOffset;
+        this.yPixelOffset = yPixelOffset;
         this.makePath();
     }
 
@@ -514,7 +519,7 @@ class Path {
             seg.x = this.x[s];
             seg.fieldX = ((this.p0.x - this.xPixelOffset) / this.pixelsPerUnit) + seg.x;
             seg.y = this.y[s];
-            seg.fieldY = ((this.p0.y - Util.yPixelOffset) / this.pixelsPerUnit) + seg.y;
+            seg.fieldY = ((this.p0.y - this.yPixelOffset) / this.pixelsPerUnit) + seg.y;
             seg.pos = this.l[s];
             seg.dydx = this.derivative(s, s2);
             seg.holonomicAngle = this.inGroup.segments[i].holonomicAngle;
